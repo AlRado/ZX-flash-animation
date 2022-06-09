@@ -11,11 +11,15 @@
 --
 ----------------------------------------------------------------------
 
-local version = "0.5.3"
+local version = "0.5.4"
+
+local DEFAULT_WIDTH = 32
+local DEFAULT_HEIGHT = 24
 
 local border_size = 4
-local screen_w = 32
-local screen_h = 24
+local screen_w = DEFAULT_WIDTH
+local screen_h = DEFAULT_HEIGHT
+local isHorizontal = true
 local flashDuration = 0.33
 local alphaColor = 0
 local defaultScreenColor = 5
@@ -33,8 +37,9 @@ local function showStartDialog()
                 bounds=Rectangle(380, 220, 250, 40)}
 
     if dlg.data.vertical then
-        screen_w = 24
-        screen_h = 32
+        screen_w = DEFAULT_HEIGHT
+        screen_h = DEFAULT_WIDTH
+        isHorizontal = false
     end
 end
 
@@ -167,7 +172,7 @@ local function init()
 
         :separator {    text="Import from .scr" }
 
-    if (screen_w == 24) then
+    if (isHorizontal == false) then
         dlg:combobox{
                         id="rotate",
                         label="Rotation:",
@@ -355,7 +360,7 @@ function onExport(isTwoFrames)
     end
 
     -- fill the attributes
-    if (screen_w == 32) then
+    if (isHorizontal) then
         -- horizontal view
         for y = border_size, getMaxY() do
             for x = border_size, getMaxX() do
@@ -487,7 +492,7 @@ function drawData(data, isTwoFrames)
 
     -- fill the attributes
     local i = 6145
-    if (screen_w == 32) then
+    if (isHorizontal) then
         -- horizontal view
         for y = border_size, getMaxY() do
             for x = border_size, getMaxX() do
